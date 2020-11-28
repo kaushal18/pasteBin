@@ -1,6 +1,5 @@
 const textArea = document.querySelector("#textArea");
 const socket = io("http://localhost:5000");
-console.log(socket);
 
 socket.on("connect", () => {
   console.log(socket.id);
