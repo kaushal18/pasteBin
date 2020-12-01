@@ -1,0 +1,36 @@
+@font-face {
+  font-family: "Roboto-light";
+  src: url("./fonts/Roboto-Light.ttf");
+}
+
+@font-face {
+  font-family: "Roboto-medium";
+  src: url("./fonts/Roboto-Medium.ttf");
+}
+
+body {
+  font-family: "Roboto-medium", Arial, Helvetica;
+  background-color: rgb(228, 228, 228);
+}
+
+.titleText {
+  text-align: center;
+}
+
+.contentArea {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+textarea {
+  font-family: "Roboto-light", Arial, Helvetica;
+  font-size: 18px;
+  resize: none;
+  border-radius: 10px;
+  height: 70vh;
+  width: 80vw;
+  padding: 20px;
+  border: none;
+  outline: none;
+}

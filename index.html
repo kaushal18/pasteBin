@@ -4,10 +4,14 @@
     <meta charset="UTF-8" />
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css" />
     <title>PasteBin</title>
   </head>
   <body>
-    <textarea name="textArea" id="textArea" cols="30" rows="10"></textarea>
+    <p class="titleText">PasteBin - Share with just a link!</p>
+    <div class="contentArea">
+      <textarea name="content" id="content"></textarea>
+    </div>
     <script src="js/urlGenerator.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.1/socket.io.js"></script>
     <script src="js/main.js"></script>

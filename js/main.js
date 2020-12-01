@@ -1,5 +1,9 @@
-const textArea = document.querySelector("#textArea");
-const socket = io("http://localhost:5000");
+const parsedUrl = new URL(window.location.href);
+const queryParam = parsedUrl.searchParams.get("c");
+document.title += ` / ${queryParam}`;
+
+const textArea = document.querySelector("#content");
+const socket = io("http://localhost:5000", { query: `token=${queryParam}` });
 
 socket.on("connect", () => {
   console.log(socket.id);
