@@ -1,9 +1,14 @@
+const textArea = document.querySelector("#content");
+const copyLinkButton = document.querySelector(".copyLink");
+
 const parsedUrl = new URL(window.location.href);
 const queryParam = parsedUrl.searchParams.get("c");
-document.title += ` / ${queryParam}`;
+let timerId = null;
+const delay = 300;
 
-const textArea = document.querySelector("#content");
-const copyLink = document.querySelector(".copyLink");
+// update title of page
+document.title += ` / ${queryParam}`;
+// make socket connection
 const socket = io("http://localhost:5000", { query: `token=${queryParam}` });
 
 socket.on("connect", () => {
@@ -17,17 +22,23 @@ socket.on("message", (message) => {
 
 // listner for changes in textArea
 textArea.addEventListener("input", (event) => {
-  socket.emit("message", event.target.value);
+  // debounce the request to server
+  clearTimeout(timerId);
+
+  timerId = setTimeout(() => {
+    socket.emit("message", event.target.value);
+  }, delay);
 });
 
-copyLink.addEventListener("click", () => {
+// copy link to clipboard
+copyLinkButton.addEventListener("click", () => {
   const url = window.location.href;
   navigator.clipboard.writeText(url).then(
     function () {
-      console.log("copied");
+      copyLinkButton.innerHTML = "Copied!";
     },
     function () {
-      console.log("failed");
+      alert("error, please copy the link from browser search bar");
     }
   );
 });
