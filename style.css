@@ -17,6 +17,17 @@ body {
   text-align: center;
 }
 
+.copyLink {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background: rgb(128, 128, 255);
+  color: white;
+  padding: 5px 20px 5px 20px;
+  margin-left: 10px;
+  border-radius: 10px;
+}
+
 .contentArea {
   align-items: center;
   display: flex;
