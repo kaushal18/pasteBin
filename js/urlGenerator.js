@@ -5,7 +5,7 @@ if (isQueryInValid(url) && history.pushState) {
   const query = getRandomQuery(8);
   const newurl =
     window.location.protocol + "//" + window.location.host + `?c=${query}`;
-  window.history.pushState({ path: newurl }, "", newurl);
+  window.history.replaceState({ path: newurl }, "", newurl);
 }
 
 function isQueryInValid(url) {
