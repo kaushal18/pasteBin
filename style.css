@@ -17,13 +17,6 @@ body {
   border: none;
   outline: none;
   cursor: pointer;
-}
-
-.titleText {
-  text-align: center;
-}
-
-.copyLink {
   font-family: inherit;
   background: rgb(128, 128, 255);
   color: white;
@@ -32,9 +25,19 @@ body {
   border-radius: 10px;
 }
 
-.contentArea {
-  align-items: center;
+.top {
   display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.titleText {
+  text-align: center;
+}
+
+.contentArea {
+  display: flex;
+  align-items: center;
   justify-content: center;
 }
 
@@ -43,9 +46,10 @@ textarea {
   font-size: 18px;
   resize: none;
   border-radius: 10px;
-  height: 70vh;
+  height: 75vh;
   width: 90vw;
   padding: 20px;
   border: none;
   outline: none;
+  box-shadow: 0 1px 6px 0 rgba(131, 131, 131, 0.2);
 }
