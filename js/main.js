@@ -1,10 +1,13 @@
 const textArea = document.querySelector("#content");
 const copyLinkButton = document.querySelector(".copyLink");
+const newUrlBtn = document.querySelector("#newUrlBtn");
 
 const parsedUrl = new URL(window.location.href);
 const queryParam = parsedUrl.searchParams.get("c");
-let timerId = null;
-const delay = 300;
+const debouceParams = {
+  timerId: null,
+  debouceParams: 300,
+};
 
 // update title of page
 document.title += ` / ${queryParam}`;
@@ -23,11 +26,11 @@ socket.on("message", (message) => {
 // listner for changes in textArea
 textArea.addEventListener("input", (event) => {
   // debounce the request to server
-  clearTimeout(timerId);
+  clearTimeout(debouceParams.timerId);
 
-  timerId = setTimeout(() => {
+  debouceParams.timerId = setTimeout(() => {
     socket.emit("message", event.target.value);
-  }, delay);
+  }, debouceParamsdelay);
 });
 
 // copy link to clipboard
@@ -41,4 +44,10 @@ copyLinkButton.addEventListener("click", () => {
       alert("error, please copy the link from browser search bar");
     }
   );
+});
+
+// generate new url
+newUrlBtn.addEventListener("click", () => {
+  window.location.href =
+    window.location.protocol + "//" + window.location.host + `?c=`;
 });
