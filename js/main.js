@@ -1,6 +1,7 @@
 const textArea = document.querySelector("#content");
 const copyLinkButton = document.querySelector(".copyLink");
 const newUrlBtn = document.querySelector("#newUrlBtn");
+const migrateUrlBtn = document.querySelector("#migrateUrlBtn");
 
 const parsedUrl = new URL(window.location.href);
 const queryParam = parsedUrl.searchParams.get("c");
@@ -30,20 +31,43 @@ textArea.addEventListener("input", (event) => {
 
   debouceParams.timerId = setTimeout(() => {
     socket.emit("message", event.target.value);
-  }, debouceParamsdelay);
+  }, debouceParams.delay);
 });
 
 // copy link to clipboard
 copyLinkButton.addEventListener("click", () => {
   const url = window.location.href;
   navigator.clipboard.writeText(url).then(
-    function () {
-      copyLinkButton.innerHTML = "Copied!";
-    },
-    function () {
-      alert("error, please copy the link from browser search bar");
-    }
+    () => (copyLinkButton.innerHTML = "Copied!"),
+    () => alert("error, please copy the link from browser search bar")
   );
+});
+
+// migrate to new url
+migrateUrlBtn.addEventListener("click", () => {
+  const newToken = prompt("enter a new url");
+  if (newToken === null || newToken.trim() === "") return alert("invalid url");
+
+  // http post req with new token, old token, content
+  const payload = {
+    oldToken: queryParam,
+    newToken: newToken.trim(),
+    content: textArea.value,
+  };
+
+  fetch("http://localhost:5000/api/migrate", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  })
+    .then((response) => response.json())
+    .then((response) => console.log(response))
+    .catch((error) => console.log(error));
+
+  window.location.href =
+    window.location.protocol + "//" + window.location.host + `?c=${newToken}`;
 });
 
 // generate new url
