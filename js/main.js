@@ -48,7 +48,6 @@ migrateUrlBtn.addEventListener("click", () => {
   const newToken = prompt("enter a new url");
   if (newToken === null || newToken.trim() === "") return alert("invalid url");
 
-  // http post req with new token, old token, content
   const payload = {
     oldToken: queryParam,
     newToken: newToken.trim(),
