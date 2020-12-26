@@ -46,12 +46,13 @@ copyLinkButton.addEventListener("click", () => {
 // migrate to new url
 migrateUrlBtn.addEventListener("click", () => {
   const newToken = prompt("enter a new url");
-  if (newToken === null || newToken.trim() === "") return alert("invalid url");
+  let isError = false;
+  if (newToken === null) return;
+  if (newToken.trim() === "") return alert("invalid url");
 
   const payload = {
     oldToken: queryParam,
     newToken: newToken.trim(),
-    content: textArea.value,
   };
 
   fetch("http://localhost:5000/api/migrate", {
@@ -61,12 +62,18 @@ migrateUrlBtn.addEventListener("click", () => {
     },
     body: JSON.stringify(payload),
   })
-    .then((response) => response.json())
-    .then((response) => console.log(response))
+    .then((response) => {
+      if (response.status === 200) {
+        window.location.href =
+          window.location.protocol +
+          "//" +
+          window.location.host +
+          `?c=${newToken}`;
+      } else {
+        console.log(`error ${response.status} ${response.statusText}`);
+      }
+    })
     .catch((error) => console.log(error));
-
-  window.location.href =
-    window.location.protocol + "//" + window.location.host + `?c=${newToken}`;
 });
 
 // generate new url
