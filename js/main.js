@@ -30,20 +30,16 @@ socket.on("message", (message) => {
   redoStack.length = 0;
 });
 
-function emitMessage(content) {
+// listner for changes in textArea
+textArea.addEventListener("input", (event) => {
+  const content = event.target.value;
+  undoStack.push(content.trim());
   // debounce the request to server
   clearTimeout(debouceParams.timerId);
 
   debouceParams.timerId = setTimeout(() => {
     socket.emit("message", content);
   }, debouceParams.delay);
-}
-
-// listner for changes in textArea
-textArea.addEventListener("input", (event) => {
-  const content = event.target.value;
-  undoStack.push(content.trim());
-  emitMessage(content);
 });
 
 // copy link to clipboard
@@ -103,7 +99,7 @@ document.addEventListener("keydown", (event) => {
       const undoVal = undoStack[undoStack.length - 1];
       if (undoVal) {
         textArea.value = undoVal;
-        emitMessage(textArea.value);
+        socket.emit("message", undoVal);
       }
     }
     console.log(undoStack);
@@ -113,7 +109,7 @@ document.addEventListener("keydown", (event) => {
     if (redoVal) {
       textArea.value = redoVal;
       undoStack.push(redoVal);
-      emitMessage(textArea.value);
+      socket.emit("message", redoVal);
     }
     // console.log(redoStack);
   }
