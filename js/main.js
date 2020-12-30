@@ -7,7 +7,7 @@ const parsedUrl = new URL(window.location.href);
 const queryParam = parsedUrl.searchParams.get("c");
 const debouceParams = {
   timerId: null,
-  debouceParams: 300,
+  delay: 400,
 };
 
 // in memory stack
@@ -30,16 +30,20 @@ socket.on("message", (message) => {
   redoStack.length = 0;
 });
 
-// listner for changes in textArea
-textArea.addEventListener("input", (event) => {
-  const content = event.target.value;
-  undoStack.push(content.trim());
+function debounceAndEmit(content) {
   // debounce the request to server
   clearTimeout(debouceParams.timerId);
 
   debouceParams.timerId = setTimeout(() => {
     socket.emit("message", content);
   }, debouceParams.delay);
+}
+
+// listner for changes in textArea
+textArea.addEventListener("input", (event) => {
+  const content = event.target.value;
+  undoStack.push(content.trim());
+  debounceAndEmit(content);
 });
 
 // copy link to clipboard
@@ -99,18 +103,16 @@ document.addEventListener("keydown", (event) => {
       const undoVal = undoStack[undoStack.length - 1];
       if (undoVal) {
         textArea.value = undoVal;
-        socket.emit("message", undoVal);
+        debounceAndEmit(undoVal);
       }
     }
-    console.log(undoStack);
   } else if (event.ctrlKey && event.key === "y") {
     event.preventDefault();
     const redoVal = redoStack.pop();
     if (redoVal) {
       textArea.value = redoVal;
       undoStack.push(redoVal);
-      socket.emit("message", redoVal);
+      debounceAndEmit(redoVal);
     }
-    // console.log(redoStack);
   }
 });
