@@ -1,9 +1,14 @@
+/**
+ * socket connections
+ */
+
 const textArea = document.querySelector("#content");
 const copyLinkButton = document.querySelector(".copyLink");
 const newUrlBtn = document.querySelector("#newUrlBtn");
 const migrateUrlBtn = document.querySelector("#migrateUrlBtn");
 
-const parsedUrl = new URL(window.location.href);
+// get token from url
+const parsedUrl = new URL(location.href);
 const queryParam = parsedUrl.searchParams.get("c");
 const debouceParams = {
   timerId: null,
@@ -48,7 +53,7 @@ textArea.addEventListener("input", (event) => {
 
 // copy link to clipboard
 copyLinkButton.addEventListener("click", () => {
-  const url = window.location.href;
+  const url = location.href;
   navigator.clipboard.writeText(url).then(
     () => (copyLinkButton.innerHTML = "Copied!"),
     () => alert("error, please copy the link from browser url bar")
@@ -75,13 +80,11 @@ migrateUrlBtn.addEventListener("click", () => {
   })
     .then((response) => {
       if (response.status === 200) {
-        window.location.href =
-          window.location.protocol +
-          "//" +
-          window.location.host +
-          `?c=${newToken}`;
+        location.href =
+          location.protocol + "//" + location.host + `?c=${newToken}`;
       } else {
         console.log(`error ${response.status} ${response.statusText}`);
+        console.log(response.data);
       }
     })
     .catch((error) => console.log(error));
@@ -89,8 +92,7 @@ migrateUrlBtn.addEventListener("click", () => {
 
 // generate new url
 newUrlBtn.addEventListener("click", () => {
-  window.location.href =
-    window.location.protocol + "//" + window.location.host + `?c=`;
+  location.href = location.protocol + "//" + location.host + `?c=`;
 });
 
 // listen for undo and redo
